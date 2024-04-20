@@ -20,8 +20,8 @@
 #### Astronomer-io (8bit):
 - [8b](https://huggingface.co/astronomer-io/Llama-3-8B-Instruct-GPTQ-8-Bit/tree/main)
 
-## Running Model locally
-### Meta Llama3 model Page
+## non-GUI interfaces
+### Meta Llama3 run resources (torch)
 - The official method of running llama (with unofficial weights)
 - github: https://github.com/meta-llama/llama3
 - [RECIPES](https://github.com/meta-llama/llama-recipes)
@@ -30,7 +30,7 @@
 - [Meta Llama Guard](https://github.com/meta-llama/llama-recipes/tree/main/recipes/responsible_ai)
 - [meta trust and safety tools](https://llama.meta.com/trust-and-safety/)
 
-### Hugging Face script
+### Hugging Face script (huggingface-cli)
 - Python file inference
 - - imports: [transformers](https://pypi.org/project/transformers/), [torch](https://pypi.org/project/torch/)
 - **login to huggingface**
@@ -54,6 +54,8 @@ The path to your model is most likely incorrect.
 ##### **bash: /home/xdoestech/.local/bin/huggingface-cli: No such file or directory**
 - export PATH="/home/xdoestech/.local/bin:$PATH"
 - NOT PERMANENT SOLUTION: may cause further errors if you have multiple environments with different versions of huggingface-cli
+
+## GUI interfaces
 ### oobabooga
 all models (probably, so far, your weird esoteric model type won't work)<br>
 github: [link](https://github.com/oobabooga/text-generation-webui)
