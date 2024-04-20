@@ -7,6 +7,7 @@
 
 ## Weights (Hugging Face):
 #### meta-llama official weights: 
+- my google drive: https://drive.google.com/drive/folders/1aRaFzuu5NQyJiSEJcv_I5ZQCw_pMWra8
 #### 8 bit weights: [LoneStriker/Meta-Llama-3-8B-Instruct-8.0bpw-h8-exl2](https://huggingface.co/LoneStriker/Meta-Llama-3-8B-Instruct-8.0bpw-h8-exl2/discussions/1) 
 - [8b](https://huggingface.co/LoneStriker/Meta-Llama-3-8B-Instruct-8.0bpw-h8-exl2) model
 - [70b](https://huggingface.co/LoneStriker/Meta-Llama-3-70B-Instruct-2.25bpw-h6-exl2) model
