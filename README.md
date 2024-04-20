@@ -8,9 +8,17 @@
 ## Weights (Hugging Face):
 #### meta-llama official weights: 
 - my google drive: https://drive.google.com/drive/folders/1aRaFzuu5NQyJiSEJcv_I5ZQCw_pMWra8
-#### 8 bit weights: [LoneStriker/Meta-Llama-3-8B-Instruct-8.0bpw-h8-exl2](https://huggingface.co/LoneStriker/Meta-Llama-3-8B-Instruct-8.0bpw-h8-exl2/discussions/1) 
+#### LoneStriker 8 bit weights: [LoneStriker/Meta-Llama-3-8B-Instruct-8.0bpw-h8-exl2](https://huggingface.co/LoneStriker/Meta-Llama-3-8B-Instruct-8.0bpw-h8-exl2/discussions/1) 
 - [8b](https://huggingface.co/LoneStriker/Meta-Llama-3-8B-Instruct-8.0bpw-h8-exl2) model
 - [70b](https://huggingface.co/LoneStriker/Meta-Llama-3-70B-Instruct-2.25bpw-h6-exl2) model
+- SYMBOLIC LINKING APPEARS BROKEN. Download the LoneStriker output.safetensors, tokenizer.json directly. 
+#### NousResearch (GGUF): 
+- [8b](https://huggingface.co/NousResearch/Meta-Llama-3-8B-Instruct-GGUF)
+- [70](https://huggingface.co/NousResearch/Meta-Llama-3-70B-Instruct-GGUF)
+#### NousResearch (there are bunch)
+- [link to page](https://huggingface.co/NousResearch)
+#### Astronomer-io (8bit):
+- [8b](https://huggingface.co/astronomer-io/Llama-3-8B-Instruct-GPTQ-8-Bit/tree/main)
 
 ## Running Model locally
 ### Meta Llama3 model Page
@@ -43,13 +51,34 @@ The path to your model is most likely incorrect.
 - model path: LoneStriker/Meta-Llama-3-8B-Instruct-8.0bpw-h8-exl2
 ##### **ValueError: Couldn't instantiate the backend tokenizer from one of:**
 -make sure the tokenizer includes the model name not path
-
+##### **bash: /home/xdoestech/.local/bin/huggingface-cli: No such file or directory**
+- export PATH="/home/xdoestech/.local/bin:$PATH"
+- NOT PERMANENT SOLUTION: may cause further errors if you have multiple environments with different versions of huggingface-cli
 ### oobabooga
 all models (probably, so far, your weird esoteric model type won't work)<br>
 github: [link](https://github.com/oobabooga/text-generation-webui)
+##### Installation: 
+1. clone the repo into desired directory
+2. open the start_{YOUR OPERATING SYSTEM}.sh script
+    1. Check the config section and ensure paths are appropriate
+    2. check the '# create the installer env' section and modify the "$INSTALL_ENV_DIR" variable if necessary
+       - this will be the name of the conda environment that holds all dependencies for text generation web ui
+    3.  Run ./start_{YOUR OPERATING SYSTEM}.sh
+3. open the url that shows up in the terminal (Running on local URL:  http://127.0.0.1:7860)
+##### Using Models: 
+1. put model files into single directory in "text-generation-webui/models/"
+2. Set up model in models tab in webgui 
+3. Refresh models next to load button, select model
+4. Use correct model loader for model type (usually model type is in the name)
+5. RUNNING astronmer-io GPTQ models IN OOBABOOGA (probably for all GPTQ models)
+    1. Change Parameters: Under Parameters -> Generation -> Skip special tokens: turn this off (deselect)
+    2. Under Parameters -> Generation -> Custom stopping strings: add "<|end_of_text|>","<|eot_id|>" to the field
+
 ### lm studio
 gguf models<br>
 github: [link](https://lmstudio.ai/)
+#### Installation: 
+- just run the appImage from the website
 ### koboldcpp
 gguf models<br>ggml models<br>
 KoboldCpp is an easy-to-use AI text-generation software for GGML and GGUF models.<br>
