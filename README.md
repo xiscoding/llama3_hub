@@ -6,12 +6,12 @@
 - Linkedin Release: https://www.linkedin.com/pulse/meta-unveils-llama-3-cutting-edge-open-source-language-model-iqnjc/
 
 ## Weights (Hugging Face):
-####meta-llama official weights: 
-####8 bit weights: [LoneStriker/Meta-Llama-3-8B-Instruct-8.0bpw-h8-exl2](https://huggingface.co/LoneStriker/Meta-Llama-3-8B-Instruct-8.0bpw-h8-exl2/discussions/1) 
+#### meta-llama official weights: 
+#### 8 bit weights: [LoneStriker/Meta-Llama-3-8B-Instruct-8.0bpw-h8-exl2](https://huggingface.co/LoneStriker/Meta-Llama-3-8B-Instruct-8.0bpw-h8-exl2/discussions/1) 
 - [8b](https://huggingface.co/LoneStriker/Meta-Llama-3-8B-Instruct-8.0bpw-h8-exl2) model
 - [70b](https://huggingface.co/LoneStriker/Meta-Llama-3-70B-Instruct-2.25bpw-h6-exl2) model
 
-##Running Model locally
+## Running Model locally
 ### Meta Llama3 model Page
 - The official method of running llama (with unofficial weights)
 - github: https://github.com/meta-llama/llama3
@@ -31,19 +31,19 @@
 - - Optional: set up [git-credential](https://git-scm.com/book/en/v2/Git-Tools-Credential-Storage)
 
 #### ISSUES
-#####**ImportError: libcufft.so.10: cannot open shared object file: No such file or directory**
+##### **ImportError: libcufft.so.10: cannot open shared object file: No such file or directory**
 torch version is incompatable with cuda version
 - `pip uninstall torch torchaudio torchvision`
 - cuda version 12.1 (install latest version): `pip3 install torch torchvision torchaudio`
 - - cuda version 11.8 (install older version): `pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118`
-#####**while loading with LlamaForCausalLM, an error is thrown:**
+##### **while loading with LlamaForCausalLM, an error is thrown:**
 The path to your model is most likely incorrect. 
 - Ensure the model_id variable in your code matches the exact directory name where the downloaded model files are located.
 - model path: LoneStriker/Meta-Llama-3-8B-Instruct-8.0bpw-h8-exl2
-#####**ValueError: Couldn't instantiate the backend tokenizer from one of:**
+##### **ValueError: Couldn't instantiate the backend tokenizer from one of:**
 -make sure the tokenizer includes the model name not path
 
-###oobabooga
+### oobabooga
 all models (probably, so far, your weird esoteric model type won't work)<br>
 github: [link](https://github.com/oobabooga/text-generation-webui)
 ### lm studio
