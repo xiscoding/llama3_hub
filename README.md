@@ -70,11 +70,14 @@ github: [link](https://github.com/oobabooga/text-generation-webui)
 ##### Using Models: 
 1. put model files into single directory in "text-generation-webui/models/"
 2. Set up model in models tab in webgui 
+    1. if needed fix symbolic links: https://www.freecodecamp.org/news/linux-ln-how-to-create-a-symbolic-link-in-linux-example-bash-command/
+    2. Or just download directly from source
 3. Refresh models next to load button, select model
 4. Use correct model loader for model type (usually model type is in the name)
 5. RUNNING astronmer-io GPTQ models IN OOBABOOGA (probably for all GPTQ models)
-    1. Change Parameters: Under Parameters -> Generation -> Skip special tokens: turn this off (deselect)
-    2. Under Parameters -> Generation -> Custom stopping strings: add "<|end_of_text|>","<|eot_id|>" to the field
+    1. Load the model via AutoGPTQ, with no_inject_fused_attention enabled. This is a bug with AutoGPTQ library.
+    2. Change Parameters: Under Parameters -> Generation -> Skip special tokens: turn this off (deselect)
+    3. Under Parameters -> Generation -> Custom stopping strings: add "<|end_of_text|>","<|eot_id|>" to the field
 
 ### lm studio
 gguf models<br>
