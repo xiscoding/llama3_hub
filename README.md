@@ -78,10 +78,14 @@ github: [link](https://github.com/oobabooga/text-generation-webui)
     1. Load the model via AutoGPTQ, with no_inject_fused_attention enabled. This is a bug with AutoGPTQ library.
     2. Change Parameters: Under Parameters -> Generation -> Skip special tokens: turn this off (deselect)
     3. Under Parameters -> Generation -> Custom stopping strings: add "<|end_of_text|>","<|eot_id|>" to the field
-
+**Chat History**: (.json) Parameters-> Chat-> Chat history -> save history
+- chat history for active chat downloaded to downloads
+**Context length**: default: 8192, max: technically more/ practically not
 ### lm studio
 gguf models<br>
-github: [link](https://lmstudio.ai/)
+github: [link](https://lmstudio.ai/)<br>
+**Chat history**: (.json) saved in .cache/lm-studio/chats/{epoch?}.chat.json
+**Context length**: default: 2048, max: 8192
 #### Installation: 
 - just run the appImage from the website
 ### koboldcpp
