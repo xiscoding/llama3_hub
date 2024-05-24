@@ -4,7 +4,12 @@
 - Reddit inital opinion: https://www.reddit.com/r/LocalLLaMA/comments/1c79ci4/- meta_llama_3_is_out_first_impressions/
 - Meta official page: https://ai.meta.com/blog/meta-llama-3/ 
 - Linkedin Release: https://www.linkedin.com/pulse/meta-unveils-llama-3-cutting-edge-open-source-language-model-iqnjc/
+- hugging face blog: https://huggingface.co/blog/llama3
 
+## Whats new?
+* Vocab Size: 128,256 -> 32,000
+* 8B model uses Grouped-Query Attention (GQA), helps with context
+* trained on ~8x more data: 15 trillion tokens on a new mix of publicly available online data on two clusters with 24,000 GPUs
 ## Weights (Hugging Face):
 #### meta-llama official weights: 
 - my google drive: https://drive.google.com/drive/folders/1aRaFzuu5NQyJiSEJcv_I5ZQCw_pMWra8
