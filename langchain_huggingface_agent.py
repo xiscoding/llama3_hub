@@ -1,3 +1,10 @@
+"""
+Agent with tool use.
+HuggingFaceEndpoint. Langchain ChatModel.
+works with any model inside a dedicated HuggingFace Endpoint.
+Llama3-8B ~ 1$ / hour
+"""
+
 from langchain_huggingface import HuggingFacePipeline
 import json
 import torch
@@ -28,7 +35,44 @@ config_data = json.load(open("config.json"))
 HF_TOKEN = config_data["HF_TOKEN"]
 TAVILY_API_KEY = config_data["TAVILY_API_KEY"]
 os.environ["TAVILY_API_KEY"] = TAVILY_API_KEY
+#set up langsmith 
+os.environ["LANGCHAIN_TRACING_V2"] = "true"
+os.environ["LANGCHAIN_API_KEY"] = config_data["LANGCHAIN_API_KEY"]
 ##########################################################################
+# setup tools
+from langchain_core.tools import tool
+from typing import Annotated
+from langchain_experimental.utilities import PythonREPL
+from langchain_community.tools.tavily_search import TavilySearchResults
+from langchain.agents import Tool
+
+tavily_tool = TavilySearchResults(max_results=5)
+
+# Warning: This executes code locally, which can be unsafe when not sandboxed
+repl = PythonREPL()
+@tool
+def python_repl(
+    code: Annotated[str, "The python code to execute."]
+):
+    """Use this to execute python code. If you want to see the output of a value,
+    you should print it out with `print(...)`. This is visible to the user."""
+    try:
+        result = repl.run(code)
+    except BaseException as e:
+        return f"Failed to execute. Error: {repr(e)}"
+    result_str = f"Successfully executed:\n```python\n{code}\n```\nStdout: {result}"
+    return (
+        result_str + "\n\nIf you have completed all tasks, respond with FINAL ANSWER."
+    )
+python_repl = Tool(
+    name="python_repl",
+    description="A Python shell. Use this to execute python commands. Input should be a valid python command. If you want to see the output of a value, you should print it out with `print(...)`.",
+    func=python_repl.run,
+    return_direct=True,
+)
+tools = [tavily_tool, python_repl]
+
+##############################################################################
 # Create llm with inference endpoint
 from langchain_community.llms import HuggingFaceEndpoint
 
@@ -51,31 +95,6 @@ llm = HuggingFaceEndpoint(
 chat_model = ChatHuggingFace(llm=llm)
 ###########################################################################
 # Define tools, agent, agent executor 
-# setup tools
-from langchain_core.tools import tool
-from typing import Annotated
-from langchain_experimental.utilities import PythonREPL
-from langchain_community.tools.tavily_search import TavilySearchResults
-tavily_tool = TavilySearchResults(max_results=5)
-
-# Warning: This executes code locally, which can be unsafe when not sandboxed
-repl = PythonREPL()
-@tool
-def python_repl(
-    code: Annotated[str, "The python code to execute to generate your chart."]
-):
-    """Use this to execute python code. If you want to see the output of a value,
-    you should print it out with `print(...)`. This is visible to the user."""
-    try:
-        result = repl.run(code)
-    except BaseException as e:
-        return f"Failed to execute. Error: {repr(e)}"
-    result_str = f"Successfully executed:\n```python\n{code}\n```\nStdout: {result}"
-    return (
-        result_str + "\n\nIf you have completed all tasks, respond with FINAL ANSWER."
-    )
-tools = [tavily_tool, python_repl]
-
 # setup ReAct style prompt
 prompt = hub.pull("hwchase17/react-json")
 prompt = prompt.partial(

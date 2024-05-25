@@ -16,3 +16,5 @@ langchainhub
 langchain-huggingface
 huggingface_hub
 langchain-community
+langgraph
+langchain-google-vertexai

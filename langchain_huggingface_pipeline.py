@@ -52,3 +52,5 @@ pipe = pipeline(
 )
 llm_4bit = HuggingFacePipeline(pipeline=pipe)
 llm_4bit.invoke("Hugging Face is")
+#######################################################################
+# Create Chain
