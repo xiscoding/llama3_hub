@@ -103,34 +103,58 @@ def process_dataset_chatML(data):
     return pd.DataFrame(processed_data)
 
 def create_dataset_prompt_response(data):
-    chatHistory = []
+    chat_history = []
     for entry in data:
         title = entry.get('title', "No Title")
         messages = []
-        messages_chatML = ""  # Initialize the chatML string
-        message_count = 0
         mapping = entry.get('mapping', {})
         for key, value in mapping.items():
-            message_info = value.get('message') 
-            if message_info: # if existis message_id
+            message_info = value.get('message')
+            if message_info:
                 role = message_info.get('author', {}).get('role')
                 content = message_info.get('content', {}).get('parts', [])
 
                 # Check for valid role, content, and role exclusion
-                if role and content != [] and role != "system":
-                    # Append message to the chatML string in the correct format
-                    messages_chatML = f"\"<|im_start|>{role}\n{content[0]}<|im_end|>\n"
-                    new_record = {"chat_title":title, "role": role, "content": content[0], "content_chatML":messages_chatML}
+                if role and content and role != "system":
+                    # Handle content if it is a list of dicts
+                    content_text = content[0].get('text', '') if isinstance(content[0], dict) else content[0]
+                    
+                    # Escape special characters
+                    content_text = content_text.replace('\n', '\\n').replace('"', '\\"')
+                    
+                    # Format the message
+                    messages_chatML = f"{role}: {content_text}\n"
+                    new_record = {"chat_title": title, "role": role, "content": content_text, "content_chatML": messages_chatML}
                     messages.append(new_record)
 
-            message_count += 1
-        chatHistory.append({"chat_title":title, "messages":messages})
-        #print(f"messages processd in {title}: {message_count}")
-    return pd.DataFrame(chatHistory)
+        chat_history.append({"chat_title": title, "messages": messages})
+    return pd.DataFrame(chat_history)
 
+def export_selected_chats_to_csv(df, chat_titles, output_csv_path):
+    # Filter the DataFrame to only include rows with the specified chat titles
+    filtered_df = df[df['chat_title'].isin(chat_titles)]
 
+    # Initialize a list to hold the rows for the new CSV
+    csv_rows = []
 
-def save_df_to_file(df,  filename = "conversations_chatML_June12_2", index = False, type="parquet"):
+    # Loop through the filtered DataFrame and extract the role and content_chatML pairs
+    for index, row in filtered_df.iterrows():
+        chat_title = row['chat_title']
+        messages = row['messages']
+        for message in messages:
+            csv_rows.append({
+                "chat_title": chat_title,
+                "role": message['role'],
+                "content_chatML": message['content_chatML']
+            })
+
+    # Create a new DataFrame from the extracted rows
+    csv_df = pd.DataFrame(csv_rows)
+
+    # Save the DataFrame to a CSV file
+    csv_df.to_csv(output_csv_path, index=False)
+
+def save_df_to_file(df,  filename = "conversations_chatML_June13_1", index = False, type="parquet"):
     if type ==  "parquet":
         df.to_parquet(f"{filename}.{type}", index=index)
     if type == "csv":

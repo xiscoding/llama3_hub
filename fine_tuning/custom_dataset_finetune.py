@@ -5,17 +5,29 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 bnb_config = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_compute_dtype=torch.bfloat16)
 model = AutoModelForCausalLM.from_pretrained(model_name, quantization_config=bnb_config)
 
-from datasets import load_dataset
+from datasets import load_dataset, Dataset
+import pandas as pd
 
 def formatting_prompts_func(examples):
-    instructions = examples["instruction"]
-    inputs = examples["input"]
-    outputs = examples["output"]
-    texts = [f"Instruction: {instruction}\nInput: {input}\nOutput: {output}" for instruction, input, output in zip(instructions, inputs, outputs)]
+    roles = examples["role"]
+    contents = examples["content_chatML"]
+    texts = [f"{role}: {content}" for role, content in zip(roles, contents)]
     return {"text": texts}
 
-dataset = load_dataset("/home/xdoestech/llama3_hub/conversations_chatML_June12_1.csv", split="train")
-dataset = dataset.map(formatting_prompts_func, batched=True)
+def create_hf_dataset_from_csv(csv_file_path):
+    # Load the CSV into a pandas DataFrame
+    df = pd.read_csv(csv_file_path)
+
+    # Convert the DataFrame to a Hugging Face Dataset
+    dataset = Dataset.from_pandas(df)
+
+    # Apply the formatting function
+    formatted_dataset = dataset.map(formatting_prompts_func, batched=True)
+    
+    return formatted_dataset
+
+csv_file_path = "selected_chats.csv"  # The path to the CSV file created by export_selected_chats_to_csv
+dataset = create_hf_dataset_from_csv(csv_file_path)
 
 from transformers import TrainingArguments
 from trl import SFTTrainer

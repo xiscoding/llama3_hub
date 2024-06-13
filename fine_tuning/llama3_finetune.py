@@ -43,8 +43,8 @@ login(token = HF_TOKEN)
 # )
 
 base_model = "meta-llama/Meta-Llama-3-8B-Instruct"
-dataset_name = "ruslanmv/ai-medical-chatbot"
-new_model = "llama-3-8b-chat-doctor"
+#dataset_name = "ruslanmv/ai-medical-chatbot"
+new_model = "llama-3-8b-testGPT"
 
 torch_dtype = torch.float16
 attn_implementation = "eager"
@@ -83,26 +83,10 @@ peft_config = LoraConfig(
 model = get_peft_model(model, peft_config)
 
 #Importing the dataset
-dataset = load_dataset(dataset_name, split="all")
-dataset = dataset.shuffle(seed=65).select(range(1000)) # Only use 1000 samples for quick demo
-
-def format_chat_template(row):
-    row_json = [{"role": "user", "content": row["Patient"]},
-               {"role": "assistant", "content": row["Doctor"]}]
-    row["text"] = tokenizer.apply_chat_template(row_json, tokenize=False)
-    return row
-
-dataset = dataset.map(
-    format_chat_template,
-    num_proc=4,
-)
-
-dataset['text'][3]
-
-# split dataset into training and validation
-dataset = dataset.train_test_split(test_size=0.1)
-
-
+from dataset_utils import create_dataset_chatGPT
+csv_file_path = 'selected_chats.csv'
+dataset = create_dataset_chatGPT(csv_file_path)
+dataset = dataset.train_test_split(test_size = 0.2)
 #fine-tuning the model for one epoch and logging the metrics using the Weights and Biases
 training_arguments = TrainingArguments(
     output_dir=new_model,
