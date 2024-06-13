@@ -5,3 +5,5 @@ config.json
 *.json
 llama-3*
 wandb
+conversations*
+.~l*

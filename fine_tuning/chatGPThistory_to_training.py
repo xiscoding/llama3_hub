@@ -103,6 +103,7 @@ def process_dataset_chatML(data):
     return pd.DataFrame(processed_data)
 
 def create_dataset_prompt_response(data):
+    chatHistory = []
     for entry in data:
         title = entry.get('title', "No Title")
         messages = []
@@ -110,22 +111,37 @@ def create_dataset_prompt_response(data):
         message_count = 0
         mapping = entry.get('mapping', {})
         for key, value in mapping.items():
-            message_info = value.get('message')
-            if message_info:
+            message_info = value.get('message') 
+            if message_info: # if existis message_id
                 role = message_info.get('author', {}).get('role')
                 content = message_info.get('content', {}).get('parts', [])
 
                 # Check for valid role, content, and role exclusion
-                if role and content and role != "system":
+                if role and content != [] and role != "system":
                     # Append message to the chatML string in the correct format
-                    messages_chatML = f"<|im_start|>{role}\n{content[0]}<|im_end|>\n"
+                    messages_chatML = f"\"<|im_start|>{role}\n{content[0]}<|im_end|>\n"
+                    new_record = {"chat_title":title, "role": role, "content": content[0], "content_chatML":messages_chatML}
+                    messages.append(new_record)
 
-                    messages.append({"chat_title":title, "role": role, "content": content[0], "content_chatML":messages_chatML})
             message_count += 1
-        print(f"messages processd in {title}: {message_count}")
-    return pd.DataFrame(messages)
+        chatHistory.append({"chat_title":title, "messages":messages})
+        #print(f"messages processd in {title}: {message_count}")
+    return pd.DataFrame(chatHistory)
 
 
 
-def save_df_to_file(df,  filename = "conversations_processed.jsonl", index = False):
-    df.to_csv(filename, index= index)
+def save_df_to_file(df,  filename = "conversations_chatML_June12_2", index = False, type="parquet"):
+    if type ==  "parquet":
+        df.to_parquet(f"{filename}.{type}", index=index)
+    if type == "csv":
+        df.to_csv(f"{filename}.{type}", index= index)
+    if type == "json":
+        df.to_json(f"{filename}.{type}", index= index)
+
+if __name__ == '__main__':
+    with open('conversations.json') as file: 
+        data = json.load(file)
+    df = create_dataset_prompt_response(data)
+    print(df.head())
+    print
+    save_df_to_file(df)
