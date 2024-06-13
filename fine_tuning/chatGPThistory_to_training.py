@@ -32,7 +32,7 @@ def select_row_by_title(df, title_value):
     else:
         return None
     
-def find_row(titile):
+def find_row(title):
     title_to_find = title
     selected_row, match_type = select_row_by_title(df, title_to_find)
     
@@ -101,6 +101,30 @@ def process_dataset_chatML(data):
             })
 
     return pd.DataFrame(processed_data)
+
+def create_dataset_prompt_response(data):
+    for entry in data:
+        title = entry.get('title', "No Title")
+        messages = []
+        messages_chatML = ""  # Initialize the chatML string
+        message_count = 0
+        mapping = entry.get('mapping', {})
+        for key, value in mapping.items():
+            message_info = value.get('message')
+            if message_info:
+                role = message_info.get('author', {}).get('role')
+                content = message_info.get('content', {}).get('parts', [])
+
+                # Check for valid role, content, and role exclusion
+                if role and content and role != "system":
+                    # Append message to the chatML string in the correct format
+                    messages_chatML = f"<|im_start|>{role}\n{content[0]}<|im_end|>\n"
+
+                    messages.append({"chat_title":title, "role": role, "content": content[0], "content_chatML":messages_chatML})
+            message_count += 1
+        print(f"messages processd in {title}: {message_count}")
+    return pd.DataFrame(messages)
+
 
 
 def save_df_to_file(df,  filename = "conversations_processed.jsonl", index = False):
