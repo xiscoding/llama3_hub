@@ -123,7 +123,7 @@ def create_dataset_prompt_response(data):
                     content_text = content_text.replace('\n', '\\n').replace('"', '\\"')
                     
                     # Format the message
-                    messages_chatML = f"{role}: {content_text}\n"
+                    messages_chatML = f"<|im_start|>{role}\n{content[0]}<|im_end|>\n"
                     new_record = {"chat_title": title, "role": role, "content": content_text, "content_chatML": messages_chatML}
                     messages.append(new_record)
 

@@ -27,6 +27,58 @@ BEST SOURCES:
 * Chat Templating HuggingFace : https://huggingface.co/docs/transformers/main/en/chat_templating
 * tokenizer.apply_chat_template
 
+## chatGPT history data format
+``` json
+sample_data = [
+    {
+        "title": "Kivy Workout App Transition",
+        "create_time": 1717275611.245864,
+        "update_time": 1717343856.547421,
+        "mapping": {
+            "b2606240-aab9-48fc-9810-48e63ff1a7f4": {
+                "id": "b2606240-aab9-48fc-9810-48e63ff1a7f4",
+                "message": {
+                    "id": "b2606240-aab9-48fc-9810-48e63ff1a7f4",
+                    "author": {"role": "system", "name": None, "metadata": {}},
+                    "create_time": None,
+                    "update_time": None,
+                    "content": {"content_type": "text", "parts": [""]},
+                    "status": "finished_successfully",
+                    "end_turn": True,
+                    "weight": 0.0,
+                    "metadata": {"is_visually_hidden_from_conversation": True},
+                    "recipient": "all"
+                },
+                "parent": "aaa1c7a0-8abc-420c-89d0-769df8dca8a8",
+                "children": ["aaa25b5c-4c8a-476a-9bbf-a00bef55673a"]
+            },
+            "aaa1c7a0-8abc-420c-89d0-769df8dca8a8": {
+                "id": "aaa1c7a0-8abc-420c-89d0-769df8dca8a8",
+                "message": None,
+                "parent": None,
+                "children": ["b2606240-aab9-48fc-9810-48e63ff1a7f4"]
+            },
+            "aaa25b5c-4c8a-476a-9bbf-a00bef55673a": {
+                "id": "aaa25b5c-4c8a-476a-9bbf-a00bef55673a",
+                "message": {
+                    "id": "aaa25b5c-4c8a-476a-9bbf-a00bef55673a",
+                    "author": {"role": "user", "name": None, "metadata": {}},
+                    "create_time": 1717275611.281665,
+                    "update_time": None,
+                    "content": {"content_type": "text", "parts": ["You are going to create a workout app for android. You will use kivy, buildozer, and python. I will provide 2 example files for you to use. One file is the main logic for the workout app, the other file is an example version of the app using tkinter. You will use both files to create a kivy version. "]},
+                    "status": "finished_successfully",
+                    "end_turn": True,
+                    "weight": 0.0,
+                    "metadata": {},
+                    "recipient": "all"
+                },
+                "parent": "aaa1c7a0-8abc-420c-89d0-769df8dca8a8",
+                "children": []
+            }
+        }
+    }
+]
+```
 # ISSUES:
 * NotImplementedError: Cannot copy out of meta tensor; no data!
     * https://github.com/AUTOMATIC1111/stable-diffusion-webui/issues/13087
