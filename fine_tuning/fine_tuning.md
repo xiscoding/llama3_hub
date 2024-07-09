@@ -4,8 +4,8 @@ Overview: The process here is using huggingface hub. There should be little chan
 
 ## Process overview: 
 1. Create Dataset (chatGPThistory_to_training.py)
-2. train adapter
-3. merge adapter
+2. train adapter (llama3_finetune.py)
+3. merge adapter (merge_adapter_to_base.py)
 4. FIN!
 
 BEST SOURCES: 

@@ -5,8 +5,9 @@ config_data = json.load(open("config.json"))
 HF_TOKEN = config_data["HF_TOKEN"]
 login(token = HF_TOKEN)
 
+NEW_MODEL_NAME = "llama-3-8b-Instruct-July8-1"
 base_model = "meta-llama/Meta-Llama-3-8B-Instruct"
-new_model = "/home/xdoestech/llama3_hub/llama-3-8b-chat-doctor"
+new_model = f"/home/xdoestech/llama3_hub/{NEW_MODEL_NAME}"
 
 ###################################################################################
 # merge base model with adapter
@@ -36,7 +37,8 @@ model = model.merge_and_unload()
 
 ###################################################################################
 # Confirm functionality with model inference
-messages = [{"role": "user", "content": "Hello doctor, I have bad acne. How do I get rid of it?"}]
+TEST_QUERY = "Hello doctor, I have bad acne. How do I get rid of it?"
+messages = [{"role": "user", "content": TEST_QUERY}]
 
 prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
 pipe = pipeline(
@@ -53,9 +55,9 @@ print(outputs[0]["generated_text"])
 ###################################################################################
 # save model, total size ~ 16gb
 model.save_pretrained("llama-3-8b-chat-doctor")
-tokenizer.save_pretrained("llama-3-8b-chat-doctor")
+tokenizer.save_pretrained(NEW_MODEL_NAME)
 
 ###################################################################################
 # push model to hugging face hub
 model.push_to_hub("llama-3-8b-chat-doctor", use_temp_dir=False)
-tokenizer.push_to_hub("llama-3-8b-chat-doctor", use_temp_dir=False)
+tokenizer.push_to_hub(NEW_MODEL_NAME, use_temp_dir=False)
