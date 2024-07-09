@@ -3,7 +3,7 @@
 Overview: The process here is using huggingface hub. There should be little change if you decide to use a different model, dataset, etc. 
 
 ## Process overview: 
-1. Create Dataset (NOT IMPLEMENTED YET, similar to other code in gpt_trainer repo)
+1. Create Dataset (chatGPThistory_to_training.py)
 2. train adapter
 3. merge adapter
 4. FIN!

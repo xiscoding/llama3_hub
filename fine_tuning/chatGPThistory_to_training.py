@@ -167,5 +167,4 @@ if __name__ == '__main__':
         data = json.load(file)
     df = create_dataset_prompt_response(data)
     print(df.head())
-    print
     save_df_to_file(df)
